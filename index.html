@@ -121,6 +121,19 @@
   .tlabels{display:flex; gap:6px; font-size:12px; color:var(--muted)}
   .tlabels span{flex:1; text-align:center}
 
+  /* morning update card mock */
+  .update{max-width:560px; background:linear-gradient(160deg,#141a2e,#12281f); border:1px solid #2b3a5e; border-radius:18px; padding:0; overflow:hidden; margin:16px 0; box-shadow:0 8px 30px rgba(0,0,0,.35)}
+  .update .uhead{display:flex; align-items:center; gap:10px; padding:14px 18px; background:rgba(255,255,255,.03); border-bottom:1px solid var(--line); font-weight:700; font-size:16px}
+  .update .uhead .dot{width:9px; height:9px; border-radius:50%; background:var(--accent2)}
+  .update .ubody{padding:16px 18px; font-size:16px; line-height:1.6}
+  .update .metrics{display:flex; flex-wrap:wrap; gap:8px; margin:2px 0 14px}
+  .update .metric{background:#0b0c11; border:1px solid var(--line); border-radius:10px; padding:8px 12px; font-size:14px}
+  .update .metric b{color:var(--accent2); font-size:17px}
+  .update .metric.warn b{color:var(--warn)}
+  .update .msgtext{color:var(--ink)}
+  .update .msgtext .soft{color:var(--muted)}
+  .update .ufoot{color:var(--muted); font-size:13px; padding:0 18px 14px}
+
   .repo-links{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:16px}
   @media(max-width:760px){.repo-links{grid-template-columns:1fr}}
   .repo-links a{display:block; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px; text-decoration:none; color:var(--ink)}
@@ -465,6 +478,27 @@
 2. <span class="d">Скрипт</span> берёт локацию и трекинг-поля  <span class="c"># гео, sleep debt, и т.п.</span>
 3. <span class="d">AI</span> читает свежие инсайты / интенции   <span class="c"># что важно сейчас напомнить</span>
 4. <span class="d">AI</span> пишет живой апдейт через мою мотивацию  <span class="c"># не «спи», а «в сторону хорошего дня»</span>
+    </div>
+
+    <p>Упрощённый пример — как апдейт приходит утром (цифры условные):</p>
+
+    <div class="update">
+      <div class="uhead"><span class="dot"></span>Доброе утро · среда</div>
+      <div class="ubody">
+        <div class="metrics">
+          <div class="metric">Recovery <b>72%</b></div>
+          <div class="metric">Сон <b>6ч 30м</b></div>
+          <div class="metric warn">Sleep debt <b>2ч</b></div>
+          <div class="metric">HRV <b>58</b></div>
+        </div>
+        <div class="msgtext">С добрым утром. Recovery норм, но sleep debt третий день подряд ползёт вверх —
+        ты сам говорил, что сон сейчас больше всего влияет на самочувствие. Если сегодня лечь чуть
+        раньше — это прямо в сторону твоего хорошего завтра.<br><br>
+        <span class="soft">Напомню одну интенцию, которая сейчас в фокусе: «делать дела можно медленно и
+        плавно — это тоже забота». День выглядит плотным — можешь опереться на неё.</span>
+        </div>
+      </div>
+      <div class="ufoot">⚙ цифры — скрипт (Whoop) · текст — AI через твою мотивацию</div>
     </div>
 
     <div class="callout">
