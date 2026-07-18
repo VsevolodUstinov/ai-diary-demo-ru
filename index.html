@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-дневник: личный терапевтический со-пилот</title>
+<style>
+  :root{
+    --bg:#0e0f13; --panel:#171922; --panel2:#1e2130; --ink:#e8eaf0;
+    --muted:#9aa0b4; --accent:#7c9cff; --accent2:#6ee7b7; --warn:#ffb86b;
+    --line:#2a2e3f; --card:#1b1e2b;
+    --maxw:1080px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font:400 20px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px}
+  header.hero{
+    padding:72px 0 40px; border-bottom:1px solid var(--line);
+    background:radial-gradient(1200px 400px at 50% -100px, #1a2036 0%, transparent 70%);
+  }
+  .kicker{color:var(--accent); font-weight:600; letter-spacing:.12em; text-transform:uppercase; font-size:14px}
+  h1{font-size:44px; line-height:1.15; margin:14px 0 10px; font-weight:700}
+  h1 .g{background:linear-gradient(90deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent}
+  .sub{color:var(--muted); font-size:22px; max-width:760px}
+  .meta{margin-top:22px; color:var(--muted); font-size:16px}
+  .meta b{color:var(--ink)}
+
+  nav.toc{position:sticky; top:0; z-index:20; background:rgba(14,15,19,.9); backdrop-filter:blur(8px); border-bottom:1px solid var(--line)}
+  nav.toc .wrap{display:flex; gap:6px; flex-wrap:wrap; padding:12px 24px}
+  nav.toc a{color:var(--muted); text-decoration:none; font-size:15px; padding:7px 13px; border-radius:8px; border:1px solid transparent}
+  nav.toc a:hover{color:var(--ink); background:var(--panel2); border-color:var(--line)}
+
+  section{padding:56px 0; border-bottom:1px solid var(--line)}
+  .partnum{color:var(--accent); font-weight:700; font-size:15px; letter-spacing:.1em; text-transform:uppercase}
+  h2{font-size:34px; margin:8px 0 6px; font-weight:700}
+  .lead{color:var(--muted); font-size:21px; max-width:820px; margin-bottom:28px}
+  h3{font-size:24px; margin:34px 0 12px}
+  p{max-width:820px}
+  ul{max-width:820px; padding-left:22px}
+  li{margin:8px 0}
+  .big li{font-size:21px}
+
+  .grid{display:grid; grid-template-columns:repeat(2,1fr); gap:18px; margin-top:8px}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .tile{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:22px}
+  .tile h4{margin:0 0 8px; font-size:19px}
+  .tile p{color:var(--muted); font-size:17px; margin:0}
+  .tile .em{font-size:30px; display:block; margin-bottom:10px}
+
+  /* accordion cards */
+  .card{background:var(--card); border:1px solid var(--line); border-radius:16px; margin:14px 0; overflow:hidden}
+  .card>summary{
+    list-style:none; cursor:pointer; padding:20px 22px; display:flex; align-items:center; gap:14px;
+    font-size:21px; font-weight:600; user-select:none;
+  }
+  .card>summary::-webkit-details-marker{display:none}
+  .card>summary .chev{margin-left:auto; color:var(--muted); transition:transform .2s}
+  .card[open]>summary .chev{transform:rotate(90deg)}
+  .card>summary .tag{font-size:13px; font-weight:600; color:var(--accent2); background:#12281f; border:1px solid #1f4d3a; padding:4px 10px; border-radius:999px; letter-spacing:.04em}
+  .card .body{padding:0 22px 22px; border-top:1px solid var(--line)}
+  .card .body p:first-child{margin-top:18px}
+
+  /* chat mock */
+  .chat{background:#0b0c11; border:1px solid var(--line); border-radius:14px; padding:16px; margin:14px 0}
+  .msg{margin:10px 0; display:flex; gap:10px}
+  .msg .who{flex:0 0 74px; color:var(--muted); font-size:14px; padding-top:8px; text-align:right}
+  .msg .bubble{background:var(--panel2); border:1px solid var(--line); border-radius:12px; padding:12px 15px; font-size:17px; max-width:100%}
+  .msg.user .bubble{background:#1b2338; border-color:#2b3a5e}
+  .msg.iris .bubble{background:#141a16; border-color:#254032}
+  .msg .who b{color:var(--ink)}
+  .note{color:var(--muted); font-size:15px; font-style:italic; margin:6px 0 0}
+
+  code,pre{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace}
+  pre{background:#0b0c11; border:1px solid var(--line); border-radius:12px; padding:18px; overflow:auto; font-size:15px; line-height:1.5}
+  code.inl{background:#0b0c11; border:1px solid var(--line); border-radius:6px; padding:1px 7px; font-size:.9em; color:var(--accent2)}
+
+  .callout{border-left:4px solid var(--accent); background:var(--panel); border-radius:0 12px 12px 0; padding:16px 20px; margin:20px 0; max-width:820px}
+  .callout.warn{border-color:var(--warn)}
+  .callout.key{border-color:var(--accent2)}
+  .callout b{color:var(--ink)}
+
+  .principle{display:flex; gap:16px; align-items:flex-start; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px; margin:14px 0}
+  .principle .n{flex:0 0 44px; height:44px; border-radius:12px; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#0b0c11; font-weight:800; font-size:22px; display:flex; align-items:center; justify-content:center}
+  .principle h4{margin:2px 0 6px; font-size:20px}
+  .principle p{margin:0; color:var(--muted); font-size:17px}
+
+  .steps{counter-reset:s; max-width:820px}
+  .step{counter-increment:s; position:relative; padding:14px 0 14px 52px; border-bottom:1px dashed var(--line)}
+  .step::before{content:counter(s); position:absolute; left:0; top:12px; width:34px; height:34px; border-radius:9px; background:var(--panel2); border:1px solid var(--line); color:var(--accent); font-weight:700; display:flex; align-items:center; justify-content:center}
+  .step b{color:var(--ink)}
+
+  .filetree{background:#0b0c11; border:1px solid var(--line); border-radius:12px; padding:18px; font-family:"SF Mono",ui-monospace,Menlo,monospace; font-size:15px; line-height:1.7; color:var(--muted); overflow:auto}
+  .filetree .d{color:var(--accent)}
+  .filetree .f{color:var(--ink)}
+  .filetree .c{color:#5f6craf}
+
+  .repo-links{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:16px}
+  @media(max-width:760px){.repo-links{grid-template-columns:1fr}}
+  .repo-links a{display:block; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px; text-decoration:none; color:var(--ink)}
+  .repo-links a:hover{border-color:var(--accent)}
+  .repo-links .p{color:var(--accent2); font-family:monospace; font-size:15px}
+  .repo-links .d{color:var(--muted); font-size:15px; margin-top:4px}
+
+  footer{padding:48px 0 80px; color:var(--muted)}
+  footer a{color:var(--accent)}
+  .disc{background:var(--panel); border:1px solid var(--warn); border-radius:14px; padding:18px 22px; margin:22px 0; max-width:860px}
+  .disc b{color:var(--warn)}
+
+  .svgwrap{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px; margin:18px 0; overflow:auto}
+  text{fill:var(--ink); font-family:inherit}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">AI в медицине · личный кейс</div>
+    <h1>AI-дневник как <span class="g">терапевтический со-пилот</span></h1>
+    <p class="sub">Полгода живого опыта: как разговор с AI, у которой есть <b>весь</b> мой контекст —
+    моим прямым текстом и транскриптами сессий с терапевтом — меняет работу над собой между встречами.</p>
+    <div class="meta">
+      Формат: self-therapy + human therapist в петле &nbsp;·&nbsp;
+      Стек: <b>OpenClaw + Obsidian</b> &nbsp;·&nbsp;
+      Всё воспроизводимо — материалы ниже
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#p1">1 · Результаты</a>
+    <a href="#p2">2 · Процесс</a>
+    <a href="#p3">3 · Под капотом</a>
+    <a href="#p4">4 · Забрать себе</a>
+    <a href="#privacy">Приватность</a>
+  </div>
+</nav>
+
+<!-- ============ PART 1 ============ -->
+<section id="p1">
+  <div class="wrap">
+    <div class="partnum">Часть 1</div>
+    <h2>Что это дало лично мне</h2>
+    <p class="lead">Не теория. Четыре изменения, которые я реально проживаю каждый день.</p>
+
+    <div class="grid">
+      <div class="tile">
+        <span class="em">⚡️</span>
+        <h4>Записываю в момент, а не потом</h4>
+        <p>Стал фиксировать сразу — как только что-то случилось, почувствовал или заметил. Раньше: печатать текстом вечером или вспоминать и пересказывать через неделю. Теперь мысль ловится живой.</p>
+      </div>
+      <div class="tile">
+        <span class="em">🧠</span>
+        <h4>Разговор с полным контекстом обо мне</h4>
+        <p>Могу поговорить с AI, у которой в контексте — вся моя история: дневники, карты, инсайты, сессии. Не объясняю с нуля каждый раз.</p>
+      </div>
+      <div class="tile">
+        <span class="em">🔗</span>
+        <h4>Продолжение после живой сессии</h4>
+        <p>После встречи с терапевтом разговор не обрывается. AI держит контекст сессии и помогает дожить/дообработать то, что поднялось.</p>
+      </div>
+      <div class="tile">
+        <span class="em">📊</span>
+        <h4>Ежедневные апдейты и напоминания</h4>
+        <p>Утренний апдейт про сон. Напоминания про инсайты и интенции — то, что важно, не растворяется в потоке дней.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PART 2 ============ -->
+<section id="p2">
+  <div class="wrap">
+    <div class="partnum">Часть 2</div>
+    <h2>Как это выглядит в процессе</h2>
+    <p class="lead">Четыре реальных типа взаимодействия. Разверните каждый — внутри пример диалога.
+    Примеры реальные, обезличенные; личные темы (травмы, конкретные люди) не показываю.</p>
+
+    <!-- Scenario 1 -->
+    <details class="card">
+      <summary><span class="tag">кейс 1</span> Карта частей: разные «я» реагируют на одну ситуацию <span class="chev">›</span></summary>
+      <div class="body">
+        <p class="note">Система знает мои субличности (по IFS-логике). На конкретную ситуацию показывает, какая часть как отзывается — вместо одного слипшегося «мне плохо».</p>
+        <div class="chat">
+          <div class="msg user"><div class="who"><b>Я</b></div><div class="bubble">Опять весь вечер завис в YouTube вместо того чтобы доделать важную задачу. Злюсь на себя.</div></div>
+          <div class="msg iris"><div class="who"><b>AI</b></div><div class="bubble">Смотри, кто здесь говорит. «Злюсь на себя» — это одна часть, которая через стыд гонит «давай, соберись». А та, что залипла в YouTube — не саботажник. Похоже, ей нужна пауза без ставок, которую ты легально себе не разрешаешь. Вопрос не «как заставить себя работать», а «почему прямой отдых запрещён, и он берётся контрабандой через залипание».</div></div>
+        </div>
+        <p class="note">Ценность: вместо самонаказания — карта. Видно конфликт частей, а не «я плохой».</p>
+      </div>
+    </details>
+
+    <!-- Scenario 2 -->
+    <details class="card">
+      <summary><span class="tag">кейс 2</span> «Новый» инсайт оказывается продолжением старого тренда <span class="chev">›</span></summary>
+      <div class="body">
+        <p class="note">Инсайты хранятся как связанная карта. Когда приходит «новая» мысль, система показывает, что это развитие линии, которую я веду месяцами.</p>
+        <div class="chat">
+          <div class="msg user"><div class="who"><b>Я</b></div><div class="bubble">Понял: делать мелкие дела медленно — это забота о себе, а не «надо».</div></div>
+          <div class="msg iris"><div class="who"><b>AI</b></div><div class="bubble">Это не новое — это продолжение линии. В феврале ты вывел «делать дела = забота». В апреле — «тревога = позаботиться о себе, а не спрятаться». Сейчас добавляется «медленно и плавно тоже считается». Три точки складываются в тренд: забота смещается от «сделать много» к «сделать по-доброму». Внести в инсайты как развитие, или пока подержим?</div></div>
+        </div>
+        <p class="note">Ценность: память видит тренды, которые я сам бы не заметил. Инсайты не теряются и связываются.</p>
+      </div>
+    </details>
+
+    <!-- Scenario 3 -->
+    <details class="card">
+      <summary><span class="tag">кейс 3</span> Регулярный check-in успокаивает тревожную часть <span class="chev">›</span></summary>
+      <div class="body">
+        <p class="note">Раз в неделю — короткий check-in по заранее договорённым вопросам. Ритуал, который даёт тревожной части предсказуемость.</p>
+        <div class="chat">
+          <div class="msg iris"><div class="who"><b>AI</b></div><div class="bubble">Воскресный check-in. Три вопроса: был ли повышенный риск на этой неделе? были ли проигнорированные сигналы тела? как в целом самочувствие?</div></div>
+          <div class="msg user"><div class="who"><b>Я</b></div><div class="bubble">Риска не было. Сигналы не игнорировал. Есть один вопрос к здоровью — работаю над ним, вот что заказал.</div></div>
+          <div class="msg iris"><div class="who"><b>AI</b></div><div class="bubble">Зафиксировала. Это здоровый режим, не тревожный: ты замечаешь и действуешь. Один момент держу как флажок — если через 1-2 недели не закроется, это сигнал сходить к врачу, а не лечить самому месяцами.</div></div>
+        </div>
+        <p class="note">Ценность: тревожная часть получает предсказуемый ритуал вместо фонового «а вдруг что-то не так».</p>
+      </div>
+    </details>
+
+    <!-- Scenario 4 -->
+    <details class="card">
+      <summary><span class="tag">кейс 4</span> Метапозиция: «что я здесь не замечаю?» <span class="chev">›</span></summary>
+      <div class="body">
+        <p class="note">Самый сильный ход. Прошу AI выйти в метапозицию: не решать задачу, а показать слепое пятно — и какой вопрос я себе не задаю.</p>
+        <div class="chat">
+          <div class="msg user"><div class="who"><b>Я</b></div><div class="bubble">Дела в проекте идут не туда. Одна часть говорит «работай больше», другая — «стоп, стратегия не та». Что я тут не замечаю?</div></div>
+          <div class="msg iris"><div class="who"><b>AI</b></div><div class="bubble">Слепое пятно: обе части давят на одну точку — «я недостаточно делаю». Первая прямо, вторая тоньше («нужен свежий взгляд») — но без разрешения на паузу она тоже становится требованием. Пока они воюют, ресурс уходит на войну, не на работу. Вопрос, который ты себе не задаёшь: не «работать больше или меньше», а «имею ли я право взять легальную стратегическую паузу — и почему она сейчас только контрабандой».</div></div>
+        </div>
+        <p class="note">Ценность: выход из тоннеля. Вопрос «что я не замечаю» вскрывает конфликт, который изнутри невидим.</p>
+      </div>
+    </details>
+
+    <div class="callout key">
+      <b>Почему это работает:</b> во всех четырёх случаях сила не в «умном ответе», а в том, что у AI перед глазами
+      <b>вся история целиком</b> — мои формулировки, мои части, мои прошлые инсайты. Это и есть суть. Дальше — как это устроено.
+    </div>
+  </div>
+</section>
+
+<!-- ============ PART 3 ============ -->
+<section id="p3">
+  <div class="wrap">
+    <div class="partnum">Часть 3</div>
+    <h2>Как это устроено под капотом</h2>
+    <p class="lead">Две подчасти. Сначала <b>принципы</b> — то, что действительно важно и без чего техника бессмысленна.
+    Потом <b>техника</b> — стек и инструкции, по которым это можно пересобрать.</p>
+
+    <h3>3.1 · Принципы</h3>
+
+    <div class="principle">
+      <div class="n">1</div>
+      <div>
+        <h4>Главное: говорить с AI, у которой РЕАЛЬНО есть контекст</h4>
+        <p>Не «AI, которой я в двух абзацах описал ситуацию». А AI, у которой перед глазами мой прямой текст —
+        дневники моими словами — и полные транскрипты сессий с терапевтом. Контекст не пересказанный, а первоисточник.
+        Всё остальное — обвязка вокруг этого.</p>
+      </div>
+    </div>
+
+    <div class="principle">
+      <div class="n">2</div>
+      <div>
+        <h4>И не страшно, что это 300k токенов за раз</h4>
+        <p>Современные модели держат окно ~1M токенов. Загрузить весь личный корпус целиком — <b>это нормально и это фича</b>.
+        Один разговор «на полном контексте» стоит копейки по сравнению с ценностью того, что AI видит все связи разом,
+        а не выхватывает кусочки поиском.</p>
+      </div>
+    </div>
+
+    <div class="principle">
+      <div class="n">3</div>
+      <div>
+        <h4>Роль: зеркало, а не поддакиватель</h4>
+        <p>Личность AI настроена быть <b>зеркалом</b>, а не источником комфорта. Явно прописан список «видов фейка», которых
+        нельзя делать: слепая поддержка («ты молодец»), маршрутизация («обсуди это с терапевтом»), инфляция важности
+        («это огромный прорыв» на каждое сообщение), покровительство («иди поспи»). Маркер, что получилось: ответ
+        почти никогда не начинается с «ты прав».</p>
+      </div>
+    </div>
+
+    <div class="principle">
+      <div class="n">4</div>
+      <div>
+        <h4>Исходные данные ≠ сгенерированное</h4>
+        <p>Жёсткое разделение. <b>Первоисточник</b> (мои дневники, транскрипты) — неприкосновенны, AI их не редактирует.
+        <b>Производное</b> (карты частей, сводки инсайтов) — можно перегенерировать из первоисточника в любой момент.
+        Утверждения в производных файлах ссылаются на источник, чтобы можно было проверить, откуда мысль.</p>
+      </div>
+    </div>
+
+    <div class="principle">
+      <div class="n">5</div>
+      <div>
+        <h4>Курируемые карты меняются только с подтверждением</h4>
+        <p>Инсайты и интенции — это <b>моя</b> курируемая карта, не интерпретации AI. AI может <i>предложить</i>
+        («это похоже на инсайт, вынести?»), но добавляет только с моим явным «да». Это не даёт системе тихо переписывать
+        мою картину себя под свои гипотезы.</p>
+      </div>
+    </div>
+
+    <h3>3.2 · Техника</h3>
+
+    <p>Стек: <code class="inl">OpenClaw</code> (агент-оркестратор) + <code class="inl">Obsidian</code> (хранилище
+    дневника в markdown) + memory-файлы + skills + cron + пайплайн транскрипции сессий.</p>
+
+    <div class="svgwrap">
+      <svg viewBox="0 20 980 320" width="100%" role="img" aria-label="Архитектура системы">
+        <defs>
+          <marker id="arw" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L8,3 L0,6 Z" fill="#7c9cff"/>
+          </marker>
+        </defs>
+        <!-- inputs -->
+        <rect x="20" y="30" width="200" height="70" rx="12" fill="#1b2338" stroke="#2b3a5e"/>
+        <text x="120" y="60" text-anchor="middle" font-size="17" font-weight="700">Голос / текст</text>
+        <text x="120" y="82" text-anchor="middle" font-size="13" fill="#9aa0b4">запись в момент</text>
+
+        <rect x="20" y="120" width="200" height="70" rx="12" fill="#1b2338" stroke="#2b3a5e"/>
+        <text x="120" y="150" text-anchor="middle" font-size="17" font-weight="700">Транскрипт сессии</text>
+        <text x="120" y="172" text-anchor="middle" font-size="13" fill="#9aa0b4">с терапевтом</text>
+
+        <!-- vault -->
+        <rect x="310" y="55" width="210" height="140" rx="14" fill="#171922" stroke="#2a2e3f"/>
+        <text x="415" y="85" text-anchor="middle" font-size="18" font-weight="700" fill="#6ee7b7">Obsidian vault</text>
+        <text x="415" y="112" text-anchor="middle" font-size="13" fill="#9aa0b4">дневники (первоисточник)</text>
+        <text x="415" y="133" text-anchor="middle" font-size="13" fill="#9aa0b4">карты частей / инсайты</text>
+        <text x="415" y="154" text-anchor="middle" font-size="13" fill="#9aa0b4">месячные саммари</text>
+        <text x="415" y="175" text-anchor="middle" font-size="13" fill="#9aa0b4">agents.md (роль/правила)</text>
+
+        <!-- bundle -->
+        <rect x="600" y="85" width="170" height="80" rx="12" fill="#1e2130" stroke="#2a2e3f"/>
+        <text x="685" y="120" text-anchor="middle" font-size="16" font-weight="700" fill="#ffb86b">bundle-сборка</text>
+        <text x="685" y="142" text-anchor="middle" font-size="12" fill="#9aa0b4">весь контекст → chunks</text>
+
+        <!-- agent -->
+        <rect x="810" y="70" width="150" height="110" rx="14" fill="#141a16" stroke="#254032"/>
+        <text x="885" y="115" text-anchor="middle" font-size="18" font-weight="700">AI-агент</text>
+        <text x="885" y="140" text-anchor="middle" font-size="12" fill="#9aa0b4">полный контекст</text>
+        <text x="885" y="158" text-anchor="middle" font-size="12" fill="#9aa0b4">в окне (~300k)</text>
+
+        <!-- cron -->
+        <rect x="310" y="260" width="210" height="60" rx="12" fill="#171922" stroke="#2a2e3f"/>
+        <text x="415" y="285" text-anchor="middle" font-size="15" font-weight="700">cron</text>
+        <text x="415" y="305" text-anchor="middle" font-size="12" fill="#9aa0b4">утр. апдейт · check-in · напоминания</text>
+
+        <!-- arrows -->
+        <line x1="220" y1="65" x2="305" y2="105" stroke="#7c9cff" stroke-width="2" marker-end="url(#arw)"/>
+        <line x1="220" y1="155" x2="305" y2="140" stroke="#7c9cff" stroke-width="2" marker-end="url(#arw)"/>
+        <line x1="520" y1="125" x2="595" y2="125" stroke="#7c9cff" stroke-width="2" marker-end="url(#arw)"/>
+        <line x1="770" y1="125" x2="805" y2="125" stroke="#7c9cff" stroke-width="2" marker-end="url(#arw)"/>
+        <line x1="525" y1="290" x2="880" y2="185" stroke="#2a2e3f" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arw)"/>
+        <line x1="415" y1="260" x2="415" y2="200" stroke="#2a2e3f" stroke-width="2" stroke-dasharray="5 4"/>
+      </svg>
+    </div>
+
+    <h3>Ключевой трюк: «перезагрузи всё» — весь контекст реально в окне</h3>
+    <p>Наивно читать 250+ файлов по одному — дорого, медленно, и инструменты начинают сбоить на большом контексте.
+    Решение — <b>bundle</b>: скрипт склеивает весь корпус в несколько больших кусков по ~250k символов, которые
+    читаются за ~3 команды <code class="inl">cat</code> вместо 250 обращений. Так весь личный контекст оказывается
+    в окне за один заход.</p>
+
+    <div class="callout">
+      <b>Скользящее окно, чтобы влезать в лимит:</b> последний полный + текущий месяц грузятся <b>сырым текстом</b>
+      (дневники и сессии дословно). Всё старше — как <b>месячные саммари</b> (сжатая версия с цитатами и ссылками на
+      первоисточник). Скрипт сам считает окно от сегодняшней даты. Итог: весь путь — в контексте, но влезает.
+    </div>
+
+    <p>Порядок сборки (от каркаса к деталям):</p>
+    <div class="filetree">
+<span class="c"># bundle: порядок загрузки</span>
+1. <span class="d">Фреймы</span>       <span class="c">— модель мира, карта зон, ценности, agents.md</span>
+2. <span class="d">Части</span>        <span class="c">— карта субличностей (полностью)</span>
+3. <span class="d">Инсайты</span>      <span class="c">— индекс + каждый инсайт + интенции</span>
+4. <span class="d">Люди</span>         <span class="c">— файлы про людей в жизни</span>
+5. <span class="d">Саммари</span>      <span class="c">— месячные сводки (старые месяцы, сжато)</span>
+6. <span class="d">Сырьё</span>        <span class="c">— сессии + дневники за последние месяцы, дословно, по датам</span>
+    </div>
+
+    <p>Личность и правила роли живут в одном файле-инструкции (<code class="inl">agents.md</code>) — зеркало, антифейки,
+    разделение источники/производное, правило подтверждений. Обезличенный шаблон — в репозитории.</p>
+  </div>
+</section>
+
+<!-- ============ PART 4 ============ -->
+<section id="p4">
+  <div class="wrap">
+    <div class="partnum">Часть 4</div>
+    <h2>Что можно забрать себе и повторить</h2>
+    <p class="lead">Всё в репозитории — форкай и адаптируй под себя. Ниже — что внутри.</p>
+
+    <div class="filetree">
+<span class="f">ai-diary-demo-ru/</span>
+├── <span class="f">index.html</span>            <span class="c"># эта страница</span>
+├── <span class="f">README.md</span>             <span class="c"># с чего начать, философия, приватность</span>
+├── <span class="d">templates/</span>
+│   ├── <span class="f">agents.md</span>         <span class="c"># роль-зеркало, антифейки, правила (обезличено)</span>
+│   └── <span class="f">vault-structure.md</span> <span class="c"># схема папок дневника</span>
+├── <span class="d">prompts/</span>
+│   ├── <span class="f">process-transcript.md</span> <span class="c"># транскрипт → производные заметки</span>
+│   ├── <span class="f">monthly-summary.md</span>    <span class="c"># генерация месячного саммари</span>
+│   ├── <span class="f">metaposition.md</span>       <span class="c"># «что я не замечаю»</span>
+│   └── <span class="f">weekly-checkin.md</span>     <span class="c"># воскресный check-in</span>
+├── <span class="d">skills/</span>
+│   └── <span class="f">load-everything.md</span>    <span class="c"># навык «перезагрузи весь контекст»</span>
+├── <span class="d">scripts/</span>
+│   └── <span class="f">diary-context-bundle.py</span> <span class="c"># сборщик bundle (обезличено)</span>
+└── <span class="d">architecture/</span>
+    └── <span class="f">README.md</span>             <span class="c"># стек и как пересобрать</span>
+    </div>
+
+    <div class="repo-links">
+      <a href="templates/agents.md"><div class="p">templates/agents.md</div><div class="d">Роль AI: зеркало, 4 вида фейка, разделение источники/производное, правило подтверждений</div></a>
+      <a href="prompts/metaposition.md"><div class="p">prompts/metaposition.md</div><div class="d">Промпт метапозиции: «что я здесь не замечаю и какой вопрос себе не задаю»</div></a>
+      <a href="prompts/process-transcript.md"><div class="p">prompts/process-transcript.md</div><div class="d">Обработка транскрипта сессии в производные заметки со ссылками на источник</div></a>
+      <a href="scripts/diary-context-bundle.py"><div class="p">scripts/diary-context-bundle.py</div><div class="d">Сборка всего контекста в chunks + скользящее окно саммари</div></a>
+    </div>
+
+    <p style="margin-top:22px">Как повторить, если коротко:</p>
+    <div class="steps">
+      <div class="step"><b>Хранилище.</b> Obsidian (или любой markdown-фолдер). Папки: дневники, карты, инсайты, люди, сессии.</div>
+      <div class="step"><b>Агент.</b> OpenClaw (или аналог), у которого есть доступ к папке на чтение/запись.</div>
+      <div class="step"><b>Роль.</b> Возьми <code class="inl">templates/agents.md</code>, перепиши под себя: зеркало, антифейки, что нельзя трогать без подтверждения.</div>
+      <div class="step"><b>Контекст.</b> Настрой bundle-сборку, чтобы «перезагрузи всё» реально клало весь корпус в окно.</div>
+      <div class="step"><b>Ритмы.</b> cron на утренний апдейт, недельный check-in, напоминания.</div>
+      <div class="step"><b>Транскрипты.</b> Если работаешь с терапевтом — заводи транскрипты сессий как первоисточник.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRIVACY ============ -->
+<section id="privacy">
+  <div class="wrap">
+    <div class="partnum">Важное</div>
+    <h2>Про приватность</h2>
+    <div class="disc">
+      <p><b>Это глубоко личная система.</b> Настоящий дневник — приватный и таким остаётся. В этом репозитории и в этой
+      презентации — <b>только механика</b>: структура, роль, промпты, архитектура. Примеры диалогов реальные, но обезличенные;
+      темы травм, зависимостей и любая информация о других людях — не показываются.</p>
+      <p style="margin-bottom:0">Если строишь такое для себя: держи первоисточник локально/приватно, а публично делись только обвязкой.
+      Система должна выдерживать настоящую интимность — иначе она бесполезна.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Кейс из практики · AI в медицине / self-therapy · стек OpenClaw + Obsidian.<br>
+    Репозиторий с материалами: <a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru">github.com/VsevolodUstinov/ai-diary-demo-ru</a></p>
+  </div>
+</footer>
+
+<script>
+  // deep-link: open a card if hash points to it; smooth toc active state (minimal)
+  document.querySelectorAll('nav.toc a').forEach(a=>{
+    a.addEventListener('click',()=>{ /* native smooth scroll via CSS */ });
+  });
+</script>
+</body>
+</html>
