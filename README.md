@@ -23,6 +23,7 @@ therapist в петле. Стек: **OpenClaw + Obsidian**.
 | [`prompts/`](./prompts/) | Промпты: метапозиция, обработка транскрипта, месячное саммари, check-in |
 | [`skills/load-everything.md`](./skills/load-everything.md) | Навык «перезагрузи весь контекст» |
 | [`scripts/diary-context-bundle.py`](./scripts/diary-context-bundle.py) | Сборщик bundle: весь корпус → chunks, скользящее окно саммари |
+| [`openclaw-setup/`](./openclaw-setup/) | Слой агента: из чего складывается личность+контекст (скелеты SOUL/IDENTITY/USER, cron-примеры) |
 | [`architecture/README.md`](./architecture/README.md) | Стек и как пересобрать аналог |
 
 **`vault/` — живой демо-vault (подчищенная версия реального):**

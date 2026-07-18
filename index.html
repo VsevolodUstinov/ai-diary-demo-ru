@@ -189,7 +189,12 @@
       <div class="tile">
         <span class="em">📊</span>
         <h4>Ежедневные апдейты и напоминания</h4>
-        <p>Утренний апдейт про сон. Напоминания про инсайты и интенции — то, что важно, не растворяется в потоке дней.</p>
+        <p>Утренний апдейт про сон и восстановление. Напоминания про инсайты и интенции — то, что важно, не растворяется в потоке дней.</p>
+      </div>
+      <div class="tile">
+        <span class="em">⌚</span>
+        <h4>Данные тела (Whoop) рядом с дневником</h4>
+        <p>Каждое утро — объективный срез с Whoop (recovery, сон, sleep debt, HRV) рядом с субъективным состоянием. Тело и психика — в одной картине.</p>
       </div>
     </div>
   </div>
@@ -448,6 +453,27 @@
 
     <p>Личность и правила роли живут в одном файле-инструкции (<code class="inl">agents.md</code> в корне vault) — зеркало, антифейки,
     разделение источники/производное, правило подтверждений. Подчищенная версия — в репозитории.</p>
+
+    <h3>Ритмы: утренний апдейт и данные тела</h3>
+    <p>Рядом с разговорами — <b>cron</b>-ритмы, которые работают сами. Главный — утренний апдейт.
+    Он соединяет <b>объективные данные тела</b> (Whoop) с субъективным дневником и курируемыми целями.</p>
+
+    <div class="filetree">
+<span class="c"># как собирается утренний апдейт (cron, каждое утро)</span>
+
+1. <span class="d">Скрипт</span> тянет цифры из Whoop API      <span class="c"># recovery, сон, sleep debt, HRV</span>
+2. <span class="d">Скрипт</span> берёт локацию и трекинг-поля  <span class="c"># гео, sleep debt, и т.п.</span>
+3. <span class="d">AI</span> читает свежие инсайты / интенции   <span class="c"># что важно сейчас напомнить</span>
+4. <span class="d">AI</span> пишет живой апдейт через мою мотивацию  <span class="c"># не «спи», а «в сторону хорошего дня»</span>
+    </div>
+
+    <div class="callout">
+      <b>Почему это ценно:</b> цифры тянет <b>скрипт</b> (детерминированно, без галлюцинаций),
+      а текст пишет AI — тёпло и через <b>мою</b> мотивацию, не через тревогу. Объективный график тела
+      (например, sleep debt растёт третий день) оказывается <b>рядом с субъективным</b> — и часто
+      объясняет состояние раньше, чем я сам его замечу. Тот же cron держит воскресный check-in
+      и авто-обработку новых транскриптов сессий.
+    </div>
   </div>
 </section>
 
@@ -466,6 +492,7 @@
 ├── <span class="d">prompts/</span>                <span class="c"># метапозиция, транскрипт, саммари, check-in</span>
 ├── <span class="d">skills/</span>                 <span class="c"># навык «перезагрузи всё»</span>
 ├── <span class="d">scripts/</span>                <span class="c"># bundle-сборщик</span>
+├── <span class="d">openclaw-setup/</span>          <span class="c"># слой агента: SOUL/IDENTITY/USER скелеты, cron</span>
 ├── <span class="d">architecture/</span>           <span class="c"># стек и как пересобрать</span>
 └── <span class="d">vault/</span>                  <span class="c"># ← ЖИВОЙ ДЕМО-VAULT (подчищенный реальный)</span>
     ├── <span class="f">agents.md</span>            <span class="c"># роль-зеркало, антифейки, многомерное зеркало</span>
@@ -487,6 +514,7 @@
       <a href="vault/3. Completed/Sessions with Therapist/2026-06-18 Session.md"><div class="p">vault/…/Sessions/2026-06-18.md</div><div class="d">Транскрипт сессии (первоисточник) → см. производную заметку в Session Notes</div></a>
       <a href="prompts/metaposition.md"><div class="p">prompts/metaposition.md</div><div class="d">Промпт метапозиции: «что я здесь не замечаю»</div></a>
       <a href="scripts/diary-context-bundle.py"><div class="p">scripts/diary-context-bundle.py</div><div class="d">bundle-сборка «перезагрузи всё» + скользящее окно</div></a>
+      <a href="openclaw-setup/README.md"><div class="p">openclaw-setup/</div><div class="d">Из каких файлов складывается агент: SOUL/IDENTITY/USER скелеты + cron-ритмы (утренний апдейт)</div></a>
     </div>
 
     <p style="margin-top:22px">Как повторить, если коротко:</p>
