@@ -98,6 +98,10 @@
   .filetree .d{color:var(--accent)}
   .filetree .f{color:var(--ink)}
   .filetree .c{color:#5f6craf}
+  .filetree a{text-decoration:none}
+  .filetree a .d{border-bottom:1px dashed var(--accent)}
+  .filetree a .f{border-bottom:1px dashed var(--accent2)}
+  .filetree a:hover .d,.filetree a:hover .f{color:#fff}
 
   /* layers stack for "load everything" */
   .layers{display:flex; flex-direction:column; gap:10px; margin:18px 0}
@@ -105,6 +109,8 @@
   .layer .lnum{flex:0 0 54px; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:800; color:#0b0c11; background:linear-gradient(135deg,var(--accent),var(--accent2))}
   .layer .lbody{flex:1; padding:14px 18px; min-width:0}
   .layer .lbody h4{margin:0 0 4px; font-size:19px}
+  .layer .lbody h4 a{color:var(--ink); text-decoration:none; border-bottom:1px dashed var(--accent)}
+  .layer .lbody h4 a:hover{color:var(--accent)}
   .layer .lbody p{margin:0; color:var(--muted); font-size:16px}
   .layer .lmode{flex:0 0 120px; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; text-align:center; padding:8px; border-left:1px solid var(--line)}
   .layer .lmode.raw{color:var(--accent2); background:#12281f}
@@ -408,32 +414,32 @@
     <div class="layers">
       <div class="layer">
         <div class="lnum">1</div>
-        <div class="lbody"><h4>Фреймы</h4><p>модель мира и себя, карта зон, ценности, <code class="inl">agents.md</code> (роль/правила)</p></div>
+        <div class="lbody"><h4><a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/blob/main/vault/World%20&%20self%20model/My%20zones%20mindmap.md" target="_blank" rel="noopener">Фреймы</a></h4><p>модель мира и себя, карта зон, ценности, <code class="inl">agents.md</code> (роль/правила)</p></div>
         <div class="lmode full">всегда целиком</div>
       </div>
       <div class="layer">
         <div class="lnum">2</div>
-        <div class="lbody"><h4>Части (субличности)</h4><p>карта IFS-частей: Overview, каждая часть, Shadow Map, Parts Map</p></div>
+        <div class="lbody"><h4><a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/tree/main/vault/4.%20Open%20Claw/Parts" target="_blank" rel="noopener">Части (субличности)</a></h4><p>карта IFS-частей: Overview, каждая часть, Shadow Map, Parts Map</p></div>
         <div class="lmode full">всегда целиком</div>
       </div>
       <div class="layer">
         <div class="lnum">3</div>
-        <div class="lbody"><h4>Инсайты и интенции</h4><p>компактный индекс + отдельный файл на каждый инсайт + курируемые интенции</p></div>
+        <div class="lbody"><h4><a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/tree/main/vault/4.%20Open%20Claw/Insights" target="_blank" rel="noopener">Инсайты и интенции</a></h4><p>компактный индекс + отдельный файл на каждый инсайт + курируемые интенции</p></div>
         <div class="lmode full">всегда целиком</div>
       </div>
       <div class="layer">
         <div class="lnum">4</div>
-        <div class="lbody"><h4>Люди</h4><p>файлы про значимых людей — факты, впечатления, динамика отношений</p></div>
+        <div class="lbody"><h4><a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/tree/main/vault/2.%20Useful/People" target="_blank" rel="noopener">Люди</a></h4><p>файлы про значимых людей — факты, впечатления, динамика отношений</p></div>
         <div class="lmode full">всегда целиком</div>
       </div>
       <div class="layer">
         <div class="lnum">5</div>
-        <div class="lbody"><h4>Месячные саммари</h4><p>старые месяцы — сжатая версия с цитатами и ссылками на первоисточник</p></div>
+        <div class="lbody"><h4><a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/tree/main/vault/4.%20Open%20Claw/Summaries%20by%20months" target="_blank" rel="noopener">Месячные саммари</a></h4><p>старые месяцы — сжатая версия с цитатами и ссылками на первоисточник</p></div>
         <div class="lmode sum">сжато в саммари</div>
       </div>
       <div class="layer">
         <div class="lnum">6</div>
-        <div class="lbody"><h4>Сырьё: сессии + дневники</h4><p>последние месяцы — дословно, по датам, твоим прямым текстом + транскрипты</p></div>
+        <div class="lbody"><h4><a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/tree/main/vault/0.%20Daily%20Notes" target="_blank" rel="noopener">Сырьё: сессии + дневники</a></h4><p>последние месяцы — дословно, по датам, твоим прямым текстом + транскрипты</p></div>
         <div class="lmode raw">сырьё дословно</div>
       </div>
     </div>
@@ -464,8 +470,10 @@
       личный контекст в окне за один заход.
     </div>
 
-    <p>Личность и правила роли живут в одном файле-инструкции (<code class="inl">agents.md</code> в корне vault) — зеркало, антифейки,
-    разделение источники/производное, правило подтверждений. Подчищенная версия — в репозитории.</p>
+    <p>Сам порядок сборки, схема скользящего окна и правила «загрузи всё» описаны в
+    <a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/blob/main/vault/agents.md" target="_blank" rel="noopener"><code class="inl">agents.md</code></a> —
+    том же файле-инструкции, где живут личность и правила роли: зеркало, антифейки,
+    разделение источники/производное, правило подтверждений.</p>
 
     <h3>Ритмы: утренний апдейт и данные тела</h3>
     <p>Рядом с разговорами — <b>cron</b>-ритмы, которые работают сами. Главный — утренний апдейт.
@@ -531,23 +539,23 @@
     <div class="filetree">
 <span class="f">ai-diary-demo-ru/</span>
 ├── <span class="f">index.html</span>              <span class="c"># эта страница</span>
-├── <span class="f">README.md</span>
-├── <span class="d">prompts/</span>                <span class="c"># метапозиция, транскрипт, саммари, check-in</span>
-├── <span class="d">skills/</span>                 <span class="c"># навык «перезагрузи всё»</span>
-├── <span class="d">scripts/</span>                <span class="c"># bundle-сборщик</span>
-├── <span class="d">openclaw-setup/</span>          <span class="c"># слой агента: SOUL/IDENTITY/USER скелеты, cron</span>
-├── <span class="d">architecture/</span>           <span class="c"># стек и как пересобрать</span>
-└── <span class="d">vault/</span>                  <span class="c"># ← ЖИВОЙ ДЕМО-VAULT (подчищенный реальный)</span>
-    ├── <span class="f">agents.md</span>            <span class="c"># роль-зеркало, антифейки, многомерное зеркало</span>
-    ├── <span class="d">0. Daily Notes/</span>      <span class="c"># дневник — первоисточник (5 примеров)</span>
-    ├── <span class="d">2. Useful/People/</span>    <span class="c"># люди (вымышленные примеры)</span>
-    ├── <span class="d">3. Completed/Sessions with Therapist/</span> <span class="c"># транскрипт</span>
-    └── <span class="d">4. Open Claw/</span>        <span class="c"># производное (AI поддерживает)</span>
-        ├── <span class="d">Parts/</span>            <span class="c"># 11 частей + Overview + Shadow Map</span>
-        ├── <span class="d">Insights/</span>         <span class="c"># индекс + 9 отдельных инсайтов</span>
-        ├── <span class="f">Intentions.md</span>     <span class="c"># курируемые интенции</span>
-        ├── <span class="d">Session Notes/</span>    <span class="c"># производная заметка (со ссылками)</span>
-        └── <span class="d">Summaries by months/</span> <span class="c"># пример месячного саммари</span>
+├── <a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/blob/main/README.md" target="_blank" rel="noopener"><span class="f">README.md</span></a>
+├── <a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/tree/main/prompts" target="_blank" rel="noopener"><span class="d">prompts/</span></a>                <span class="c"># метапозиция, транскрипт, саммари, check-in</span>
+├── <a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/tree/main/skills" target="_blank" rel="noopener"><span class="d">skills/</span></a>                 <span class="c"># навык «перезагрузи всё»</span>
+├── <a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/tree/main/scripts" target="_blank" rel="noopener"><span class="d">scripts/</span></a>                <span class="c"># bundle-сборщик</span>
+├── <a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/tree/main/openclaw-setup" target="_blank" rel="noopener"><span class="d">openclaw-setup/</span></a>          <span class="c"># слой агента: IDENTITY/SOUL, cron</span>
+├── <a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/tree/main/architecture" target="_blank" rel="noopener"><span class="d">architecture/</span></a>           <span class="c"># стек и как пересобрать</span>
+└── <a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/tree/main/vault" target="_blank" rel="noopener"><span class="d">vault/</span></a>                  <span class="c"># ← ЖИВОЙ ДЕМО-VAULT (подчищенный реальный)</span>
+    ├── <a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/blob/main/vault/agents.md" target="_blank" rel="noopener"><span class="f">agents.md</span></a>            <span class="c"># роль-зеркало, антифейки, многомерное зеркало</span>
+    ├── <a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/tree/main/vault/0.%20Daily%20Notes" target="_blank" rel="noopener"><span class="d">0. Daily Notes/</span></a>      <span class="c"># дневник — первоисточник (5 примеров)</span>
+    ├── <a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/tree/main/vault/2.%20Useful/People" target="_blank" rel="noopener"><span class="d">2. Useful/People/</span></a>    <span class="c"># люди (вымышленные примеры)</span>
+    ├── <a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/tree/main/vault/3.%20Completed/Sessions%20with%20Therapist" target="_blank" rel="noopener"><span class="d">3. Completed/Sessions with Therapist/</span></a> <span class="c"># транскрипт</span>
+    └── <a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/tree/main/vault/4.%20Open%20Claw" target="_blank" rel="noopener"><span class="d">4. Open Claw/</span></a>        <span class="c"># производное (AI поддерживает)</span>
+        ├── <a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/tree/main/vault/4.%20Open%20Claw/Parts" target="_blank" rel="noopener"><span class="d">Parts/</span></a>            <span class="c"># 11 частей + Overview + Shadow Map</span>
+        ├── <a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/tree/main/vault/4.%20Open%20Claw/Insights" target="_blank" rel="noopener"><span class="d">Insights/</span></a>         <span class="c"># индекс + 9 отдельных инсайтов</span>
+        ├── <a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/blob/main/vault/4.%20Open%20Claw/Intentions.md" target="_blank" rel="noopener"><span class="f">Intentions.md</span></a>     <span class="c"># курируемые интенции</span>
+        ├── <a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/tree/main/vault/4.%20Open%20Claw/Session%20Notes" target="_blank" rel="noopener"><span class="d">Session Notes/</span></a>    <span class="c"># производная заметка (со ссылками)</span>
+        └── <a href="https://github.com/VsevolodUstinov/ai-diary-demo-ru/tree/main/vault/4.%20Open%20Claw/Summaries%20by%20months" target="_blank" rel="noopener"><span class="d">Summaries by months/</span></a> <span class="c"># пример месячного саммари</span>
     </div>
 
     <div class="repo-links">
