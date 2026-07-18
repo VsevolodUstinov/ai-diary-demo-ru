@@ -15,18 +15,38 @@ therapist в петле. Стек: **OpenClaw + Obsidian**.
 
 ## Что внутри
 
+**Презентация и обвязка:**
+
 | Путь | Что это |
 |---|---|
 | [`index.html`](./index.html) | Презентация (4 части), открывается через GitHub Pages |
-| [`templates/agents.md`](./templates/agents.md) | Роль AI: зеркало, 4 вида фейка, исходники≠производное, правило подтверждений |
-| [`templates/vault-structure.md`](./templates/vault-structure.md) | Схема папок дневника |
-| [`prompts/process-transcript.md`](./prompts/process-transcript.md) | Транскрипт сессии → производные заметки со ссылками на источник |
-| [`prompts/monthly-summary.md`](./prompts/monthly-summary.md) | Генерация месячного саммари (скользящее окно) |
-| [`prompts/metaposition.md`](./prompts/metaposition.md) | «Что я здесь не замечаю и какой вопрос себе не задаю» |
-| [`prompts/weekly-checkin.md`](./prompts/weekly-checkin.md) | Воскресный check-in |
+| [`prompts/`](./prompts/) | Промпты: метапозиция, обработка транскрипта, месячное саммари, check-in |
 | [`skills/load-everything.md`](./skills/load-everything.md) | Навык «перезагрузи весь контекст» |
 | [`scripts/diary-context-bundle.py`](./scripts/diary-context-bundle.py) | Сборщик bundle: весь корпус → chunks, скользящее окно саммари |
 | [`architecture/README.md`](./architecture/README.md) | Стек и как пересобрать аналог |
+
+**`vault/` — живой демо-vault (подчищенная версия реального):**
+
+Это **настоящий** vault автора, из которого вырезано самое чувствительное (конкретная
+травма-история, зависимости, реальные имена людей). Механика, структура, части, инсайты,
+интенции и голос — настоящие. Так это и представляется на выступлении: «подчищенная
+версия моего vault».
+
+| Путь | Что это |
+|---|---|
+| [`vault/agents.md`](./vault/agents.md)* | Роль AI: зеркало, 4 вида фейка, многомерное зеркало, правила |
+| [`vault/0. Daily Notes/`](./vault/0.%20Daily%20Notes/) | Дневник — первоисточник (5 примеров записей) |
+| [`vault/2. Useful/People/`](./vault/2.%20Useful/People/) | Файлы про людей (вымышленные примеры) |
+| [`vault/3. Completed/Sessions with Therapist/`](./vault/3.%20Completed/Sessions%20with%20Therapist/) | Транскрипт сессии (первоисточник) |
+| [`vault/4. Open Claw/Parts/`](./vault/4.%20Open%20Claw/Parts/) | Карта субличностей (11 частей + Overview + Shadow Map) |
+| [`vault/4. Open Claw/Insights/`](./vault/4.%20Open%20Claw/Insights/) | Инсайты (индекс + 9 отдельных файлов) |
+| [`vault/4. Open Claw/Intentions.md`](./vault/4.%20Open%20Claw/Intentions.md) | Курируемые интенции |
+| [`vault/4. Open Claw/Session Notes/`](./vault/4.%20Open%20Claw/Session%20Notes/) | Производная заметка по сессии (со ссылками) |
+| [`vault/4. Open Claw/Summaries by months/`](./vault/4.%20Open%20Claw/Summaries%20by%20months/) | Пример месячного саммари |
+| [`vault/World & self model/`](./vault/World%20&%20self%20model/) | Карта зон уверенности (упрощённо) |
+
+*\* `vault/agents.md` — подробная подчищенная версия; идентична по механике
+[`templates/agents.md`](./templates/agents.md), которая осталась как отдельный шаблон.*
 
 ---
 

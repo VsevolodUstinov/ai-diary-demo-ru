@@ -390,33 +390,37 @@
   <div class="wrap">
     <div class="partnum">Часть 4</div>
     <h2>Что можно забрать себе и повторить</h2>
-    <p class="lead">Всё в репозитории — форкай и адаптируй под себя. Ниже — что внутри.</p>
+    <p class="lead">В репозитории — не только шаблоны, а <b>живой демо-vault</b>: подчищенная версия
+    моего настоящего vault. Вырезано самое чувствительное — механика и глубина настоящие.</p>
 
     <div class="filetree">
 <span class="f">ai-diary-demo-ru/</span>
-├── <span class="f">index.html</span>            <span class="c"># эта страница</span>
-├── <span class="f">README.md</span>             <span class="c"># с чего начать, философия, приватность</span>
-├── <span class="d">templates/</span>
-│   ├── <span class="f">agents.md</span>         <span class="c"># роль-зеркало, антифейки, правила (обезличено)</span>
-│   └── <span class="f">vault-structure.md</span> <span class="c"># схема папок дневника</span>
-├── <span class="d">prompts/</span>
-│   ├── <span class="f">process-transcript.md</span> <span class="c"># транскрипт → производные заметки</span>
-│   ├── <span class="f">monthly-summary.md</span>    <span class="c"># генерация месячного саммари</span>
-│   ├── <span class="f">metaposition.md</span>       <span class="c"># «что я не замечаю»</span>
-│   └── <span class="f">weekly-checkin.md</span>     <span class="c"># воскресный check-in</span>
-├── <span class="d">skills/</span>
-│   └── <span class="f">load-everything.md</span>    <span class="c"># навык «перезагрузи весь контекст»</span>
-├── <span class="d">scripts/</span>
-│   └── <span class="f">diary-context-bundle.py</span> <span class="c"># сборщик bundle (обезличено)</span>
-└── <span class="d">architecture/</span>
-    └── <span class="f">README.md</span>             <span class="c"># стек и как пересобрать</span>
+├── <span class="f">index.html</span>              <span class="c"># эта страница</span>
+├── <span class="f">README.md</span>
+├── <span class="d">prompts/</span>                <span class="c"># метапозиция, транскрипт, саммари, check-in</span>
+├── <span class="d">skills/</span>                 <span class="c"># навык «перезагрузи всё»</span>
+├── <span class="d">scripts/</span>                <span class="c"># bundle-сборщик</span>
+├── <span class="d">architecture/</span>           <span class="c"># стек и как пересобрать</span>
+└── <span class="d">vault/</span>                  <span class="c"># ← ЖИВОЙ ДЕМО-VAULT (подчищенный реальный)</span>
+    ├── <span class="f">agents.md</span>            <span class="c"># роль-зеркало, антифейки, многомерное зеркало</span>
+    ├── <span class="d">0. Daily Notes/</span>      <span class="c"># дневник — первоисточник (5 примеров)</span>
+    ├── <span class="d">2. Useful/People/</span>    <span class="c"># люди (вымышленные примеры)</span>
+    ├── <span class="d">3. Completed/Sessions with Therapist/</span> <span class="c"># транскрипт</span>
+    └── <span class="d">4. Open Claw/</span>        <span class="c"># производное (AI поддерживает)</span>
+        ├── <span class="d">Parts/</span>            <span class="c"># 11 частей + Overview + Shadow Map</span>
+        ├── <span class="d">Insights/</span>         <span class="c"># индекс + 9 отдельных инсайтов</span>
+        ├── <span class="f">Intentions.md</span>     <span class="c"># курируемые интенции</span>
+        ├── <span class="d">Session Notes/</span>    <span class="c"># производная заметка (со ссылками)</span>
+        └── <span class="d">Summaries by months/</span> <span class="c"># пример месячного саммари</span>
     </div>
 
     <div class="repo-links">
-      <a href="templates/agents.md"><div class="p">templates/agents.md</div><div class="d">Роль AI: зеркало, 4 вида фейка, разделение источники/производное, правило подтверждений</div></a>
-      <a href="prompts/metaposition.md"><div class="p">prompts/metaposition.md</div><div class="d">Промпт метапозиции: «что я здесь не замечаю и какой вопрос себе не задаю»</div></a>
-      <a href="prompts/process-transcript.md"><div class="p">prompts/process-transcript.md</div><div class="d">Обработка транскрипта сессии в производные заметки со ссылками на источник</div></a>
-      <a href="scripts/diary-context-bundle.py"><div class="p">scripts/diary-context-bundle.py</div><div class="d">Сборка всего контекста в chunks + скользящее окно саммари</div></a>
+      <a href="vault/agents.md"><div class="p">vault/agents.md</div><div class="d">Подробная роль AI: зеркало, 4 вида фейка, многомерное зеркало, «загрузи всё»</div></a>
+      <a href="vault/4. Open Claw/Parts/Overview.md"><div class="p">vault/…/Parts/Overview.md</div><div class="d">Карта субличностей — как разные «я» реагируют на одну ситуацию</div></a>
+      <a href="vault/4. Open Claw/Insights/2026-06-18-toxic-cross-self-attack.md"><div class="p">vault/…/toxic-cross-self-attack.md</div><div class="d">Токсичный крест: как факты собираются в самонападение + протокол выхода</div></a>
+      <a href="vault/3. Completed/Sessions with Therapist/2026-06-18 Session.md"><div class="p">vault/…/Sessions/2026-06-18.md</div><div class="d">Транскрипт сессии (первоисточник) → см. производную заметку в Session Notes</div></a>
+      <a href="prompts/metaposition.md"><div class="p">prompts/metaposition.md</div><div class="d">Промпт метапозиции: «что я здесь не замечаю»</div></a>
+      <a href="scripts/diary-context-bundle.py"><div class="p">scripts/diary-context-bundle.py</div><div class="d">bundle-сборка «перезагрузи всё» + скользящее окно</div></a>
     </div>
 
     <p style="margin-top:22px">Как повторить, если коротко:</p>
