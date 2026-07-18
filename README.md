@@ -34,7 +34,7 @@ therapist в петле. Стек: **OpenClaw + Obsidian**.
 
 | Путь | Что это |
 |---|---|
-| [`vault/agents.md`](./vault/agents.md)* | Роль AI: зеркало, 4 вида фейка, многомерное зеркало, правила |
+| [`vault/agents.md`](./vault/agents.md) | Роль AI: зеркало, 4 вида фейка, многомерное зеркало, правила (в корне vault) |
 | [`vault/0. Daily Notes/`](./vault/0.%20Daily%20Notes/) | Дневник — первоисточник (5 примеров записей) |
 | [`vault/2. Useful/People/`](./vault/2.%20Useful/People/) | Файлы про людей (вымышленные примеры) |
 | [`vault/3. Completed/Sessions with Therapist/`](./vault/3.%20Completed/Sessions%20with%20Therapist/) | Транскрипт сессии (первоисточник) |
@@ -45,8 +45,7 @@ therapist в петле. Стек: **OpenClaw + Obsidian**.
 | [`vault/4. Open Claw/Summaries by months/`](./vault/4.%20Open%20Claw/Summaries%20by%20months/) | Пример месячного саммари |
 | [`vault/World & self model/`](./vault/World%20&%20self%20model/) | Карта зон уверенности (упрощённо) |
 
-*\* `vault/agents.md` — подробная подчищенная версия; идентична по механике
-[`templates/agents.md`](./templates/agents.md), которая осталась как отдельный шаблон.*
+
 
 ---
 
